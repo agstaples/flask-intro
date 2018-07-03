@@ -31,7 +31,9 @@ def start_here():
 @app.route('/hello')
 def say_hello():
     """Say hello and prompt for user's name."""
-    which_page = choice(["/greet", "/diss"])
+    
+
+    # which_page = choice(["/greet", "/diss"])
 
     return """
     <!doctype html>
@@ -41,14 +43,22 @@ def say_hello():
       </head>
       <body>
         <h1>Hi There!</h1>
-        <form action= {}>
-          <h3>Get a surprise greeting</h3>
+        <form action= "/greet">
+          <h3>Get a greeting</h3>
           What's your name? <input type="text" name="person"><br>
+          <input type="radio" name="tone" value="compliment">Compliment
+          <input type="radio" name="tone" value="insult">Insult<br>
+          Level: 
+            <select name="level">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select><br>
           <input type="submit" value="Submit">
         </form>
       </body>
     </html>
-    """.format(which_page)
+    """
 
 # <form action="/diss">
 #   <h3>Now get dissed!</h3>
@@ -76,7 +86,27 @@ def greet_person():
 
     player = request.args.get("person")
 
-    compliment = choice(AWESOMENESS)
+    level = request.args.get("level")
+
+    tone = request.args.get("tone")
+
+    # compliment = choice(AWESOMENESS)
+    if tone == "compliment":
+      if level == "1":
+        compliment = "comp1"
+      if level == "2":
+        compliment = "comp2"
+      if level == "3":
+        compliment = "comp3"
+    elif tone == "insult":
+      if level == "1":
+        compliment = "ins1"
+      if level == "2":
+        compliment = "ins2"
+      if level == "3":
+        compliment = "ins3"
+
+
 
     return """
     <!doctype html>
