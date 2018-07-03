@@ -13,17 +13,25 @@ AWESOMENESS = [
     'oh-so-not-meh', 'brilliant', 'ducky', 'coolio', 'incredible',
     'wonderful', 'smashing', 'lovely']
 
+INSULT = [
+    'smelly', 'strange', 'goofy', 'weird']
+
 
 @app.route('/')
 def start_here():
     """Home page."""
 
-    return "<!doctype html><html>Hi! This is the home page.</html>"
+    return """<!doctype html>
+    <html>
+    Hi! This is the home page.
+    <a href="/hello">Click!</a>
+    </html>"""
 
 
 @app.route('/hello')
 def say_hello():
     """Say hello and prompt for user's name."""
+    which_page = choice(["/greet", "/diss"])
 
     return """
     <!doctype html>
@@ -33,13 +41,33 @@ def say_hello():
       </head>
       <body>
         <h1>Hi There!</h1>
-        <form action="/greet">
-          What's your name? <input type="text" name="person">
+        <form action= {}>
+          <h3>Get a surprise greeting</h3>
+          What's your name? <input type="text" name="person"><br>
           <input type="submit" value="Submit">
         </form>
       </body>
     </html>
-    """
+    """.format(which_page)
+
+# <form action="/diss">
+#   <h3>Now get dissed!</h3>
+#   What's your name? <input type="text" name="person"><br>
+#   Diss:
+#     <select name="diss">
+#       <option value='smelly'>Smelly</option>
+#       <option value='strange'>Strange</option>
+#       <option value='goofy'>Goofy</option>
+#     </select><br>
+#   <input type="submit" value="Submit">
+# </form>
+
+# Compliment:
+#             <select name="compliment">
+#               <option value='brilliant'>Brilliant</option>
+#               <option value='coolio'>Coolio</option>
+#               <option value='wowza'>Wowza</option>
+#             </select><br>
 
 
 @app.route('/greet')
@@ -55,6 +83,27 @@ def greet_person():
     <html>
       <head>
         <title>A Compliment</title>
+      </head>
+      <body>
+        Hi, {}! I think you're {}!
+      </body>
+    </html>
+    """.format(player, compliment)
+
+
+@app.route('/diss')
+def diss_person():
+    """Get user by name."""
+
+    player = request.args.get("person")
+
+    compliment = choice(INSULT)
+
+    return """
+    <!doctype html>
+    <html>
+      <head>
+        <title>A Diss</title>
       </head>
       <body>
         Hi, {}! I think you're {}!
